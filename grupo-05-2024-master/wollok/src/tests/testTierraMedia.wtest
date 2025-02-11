@@ -1,0 +1,72 @@
+/*
+import main.guerreros.gandalf.*
+import main.guerreros.tom.*
+import main.arsenal.baculo.*
+import main.arsenal.glamdring.*
+import main.zonas.gondor.*
+import main.zonas.lebennin.*
+import main.zonas.lossarnach.*
+import main.zonas.minasTirith.*
+
+describe "Test para gandalf" {
+
+  test "Poder de Gandalf con toda la vida y todas sus armas" {
+    assert.equals(2800, gandalf.poder())
+  }
+
+  test "Poder de Gandalf sin armas y con 80 de vida" {
+    gandalf.vida(80)
+    gandalf.armas([])
+    assert.equals(1200, gandalf.poder())
+  }
+
+   test "Poder de Gandalf con 5 de vida y su báculo" {
+    gandalf.vida(5)
+    gandalf.armas([baculo])
+    assert.equals(2300, gandalf.poder())
+   }
+   test "Poder de Gandalf con 30 de vida, su báculo y su espada pero versión enana" {
+    gandalf.vida(30)
+    gandalf.armas([baculo, glamdring])
+    glamdring.origen(origenEnano)
+    assert.equals(1650, gandalf.poder())
+   }
+  
+}
+
+describe "test para las zonas" {
+  test "Gandalf full vida y con sus armas, puede atravesar Lebennin" {
+    assert.that(gandalf.puedeRecorrer(lebennin))
+  }
+
+  test "Gandalf sin armas y con 11 de vida puede atravesar Lebennin" {
+    gandalf.armas([])
+    gandalf.vida(11)
+    assert.notThat(gandalf.puedeRecorrer(lebennin))
+  }
+
+  test "Gandalf sin armas y con 11 de vida puede atravesar Minas Tirith" {
+    gandalf.armas([])
+    gandalf.vida(11)
+    assert.notThat(gandalf.puedeRecorrer(minasTirith))
+  }
+
+  test "Gandalf full vida y con sus armas, puede atravesar el camino compuesto por Lebennin y Minas Tirith" {
+    assert.that(gandalf.puedeRecorrer(gondor))
+  }
+
+  test "Gandalf full vida y con sus armas, atraviesa el camino compuesto por Lebennin y Minas Tirith" {
+    gandalf.recorrer(gondor)
+    assert.equals(90,gandalf.vida())
+  }
+}
+describe "Tom Bombadil"{
+  test "Tom puede atravesar Lebennin"{
+    assert.that(tom.puedeRecorrer(lebennin))
+  }
+  test "Tom atraviesa el camino que pasa por Gondor antes mencionado"{
+    tom.recorrer(gondor)
+    assert.equals(100,tom.vida())
+  }
+}
+*/

@@ -1,0 +1,192 @@
+@startuml Segunda Entrega TP
+
+class Espada{
+
+    multiplicador
+    origen
+    --
+    multiplicador(unMultiplicador)
+    poderDeArma() 
+}
+
+class Baculo{
+
+    poder
+    poderDeArma() 
+}
+
+class Daga{
+    --
+    poderDeArma()
+}
+
+class Arco{
+    tension
+    longitud
+    --
+    tension(unaTension)
+    poderDeArma()
+}
+
+class Hacha{
+    largoMango
+    pesoHoja
+    --
+    poderDeArma()
+}
+
+class origenEspada{
+    valorOrigen
+    --
+    valorOrigen()
+}
+
+interface Armas{
+    poderDeArma()
+}
+
+Armas <|.. Espada
+Armas <|.. Baculo
+Espada <|-- Daga
+Armas <|.. Hacha
+Armas <|.. Arco
+Espada --> origenEspada
+
+
+class Guerrero {
+    armas 
+    items 
+    vida
+--
+    poder()
+    poderTotalDeArmas()
+    cantidadDeItems()
+    cantidadDe(unItem)
+    cantidadDeArmas()
+}
+
+class Elfo{
+    destrezaPropia
+    destrezaBase
+    --
+    poder()
+}
+
+class Enano{
+    factorDePoder
+    --
+    poder()
+}
+
+class Hobbit{
+    --
+    poder()
+}
+
+object gollum{
+    poder()
+}
+
+class Humano {
+    limitadorDePoder
+    --
+    poder() 
+}
+
+class Maiar{
+    factorPoderBasico
+    factorPoderAmenaza
+    --
+    estaBajoAmenaza() 
+    factorActual() 
+    poder()
+}
+
+object tom {
+
+  vida()
+  poder()
+}
+
+Guerrero <|-- Elfo
+Guerrero <|-- Enano
+Guerrero <|-- Hobbit
+Guerrero <|-- Humano
+Guerrero <|-- Maiar
+Guerrero <|-- tom
+Hobbit <|-- gollum
+
+
+class Zona {
+    requerimiento
+    --
+    puedenPasar(unGrupoDeGuerreros)
+}    
+
+
+class RequerimientoItem {
+    cantidad
+    nombreDeItem
+    --
+    cumpleRequerimiento(unGrupoDeGuerreros)
+}
+
+class RequerimientoGuerrero{
+    criterio
+--
+    cumpleRequerimiento(unGrupoDeGuerreros)
+    
+}
+
+class SinRequerimiento {
+    cumpleRequerimiento(unGrupoDeGuerreros)
+}
+
+class CriterioGuerrero{
+    criterioDeGuerrero
+    --
+    criterioDeGuerrero()
+}
+
+'object rohan{
+'    zonas
+'}
+
+'object bosqueDeFangorn {}
+
+'object edoras {}
+
+'object estemnet {}
+
+'object gondor{
+'    zonas
+'}
+
+'object belfalas{}
+ 
+'object lebennin {}
+
+'object minasTirith {}
+
+'belfalas <-- gondor
+'lebennin <-- gondor
+'minasTirith <-- gondor
+'bosqueDeFangorn <-- rohan
+'edoras <-- rohan
+'estemnet <-- rohan
+RequerimientoGuerrero --> CriterioGuerrero
+
+'Zona <|-- belfalas
+'Zona <|-- lebennin
+'Zona <|-- minasTirith
+'Zona <|-- bosqueDeFangorn
+'Zona <|-- edoras
+'Zona <|-- estemnet
+RequerimientoItem <-- Zona
+RequerimientoGuerrero <-- Zona
+SinRequerimiento <-- Zona
+
+Guerrero ->"*" Armas
+Zona .>"*" Guerrero
+
+@enduml

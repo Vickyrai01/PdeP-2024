@@ -1,0 +1,1 @@
+class NoPuedeComprarEntradaException inherits Exception{}

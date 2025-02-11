@@ -1,0 +1,70 @@
+import main.zonas.zzonas.*
+import main.zonas.sinRequerimiento.*
+import main.zonas.efectoDeVida.*
+//Arsenal
+import main.arsenal.arco.*
+import main.arsenal.daga.*
+import main.arsenal.espada.*
+import main.arsenal.hacha.*
+import main.arsenal.baculo.*
+//Guerreros
+import main.guerreros.elfos.*
+import main.guerreros.enano.*
+import main.guerreros.gollum.*
+import main.guerreros.guerrero.*
+import main.guerreros.hobit.*
+import main.guerreros.humano.*
+import main.guerreros.maiar.*
+import main.guerreros.tom.*
+//Caminos tierra media
+import main.caminos.camino.*
+import main.regiones.gondor.*
+import main.regiones.rohan.*
+
+describe "Pruebas para las zonas"{
+        const hacha = new Hacha (largoMango = 70, pesoHoja = 5)
+        const gimli = new Enano (factorDePoder = 3, armas = [hacha, hacha], vida = 75)
+        const arco = new Arco(longitud = 110)
+        const espadaElfica = new Espada(multiplicador = 12, origen = origenElfico)
+        const legolas = new Elfo(armas = [arco, espadaElfica], vida = 80, destrezaPropia = 1.5,items=["CapaElfica"])
+        const aragorn = new Humano (limitadorDePoder = 20, armas = [arco], vida = 85, items = ["capa", "remedios"])
+
+    test "1) Un grupo que no puede atravesar una zona, produce un error al intentar pasar."{
+        assert.throwsException({ minasTirith.atravesarZonas([gimli,legolas]) })
+    }
+
+    test "2) Un integrante sufre las consecuencias de pérdida de ítem, al atravesar una zona con tal efecto."{
+        bosqueDeFangorn.atravesarZona([legolas])
+        assert.equals(0,legolas.cantidadDe("CapaElfica"))
+    }
+
+    test "3) Un integrante no pierde ningún ítem, debido a que no lo posee."{
+        bosqueDeFangorn.atravesarZona([aragorn])
+        assert.equals(["capa", "remedios"], aragorn.items())
+    }
+    
+    test " 4) Boromir, queda fuera de combate luego de atravesar Parth Galen."{
+        const boromir = new Humano (limitadorDePoder = 20, armas = [], vida = 20)
+        const parthGalen = new Zona(requerimiento = new SinRequerimiento(), efecto = new EfectoPerderVida (cantidad = 21), zonasLimitrofes = #{}, regionALaQuePertenece = {})
+        parthGalen.atravesarZona([boromir])
+        assert.that(boromir.estaFueraDeCombate())
+    }
+}
+
+describe "Mas sobre Caminos"{
+
+    test "Implementar la validacion de un camino, de forma tal que verifique que esta compuesto por zonas que son limitrofes."{
+        assert.that(caminoTP.validarCamino())
+    }
+
+    test "1)Un grupo que quiere atravesar un camino invalido debe producir un error"{
+        
+        
+
+    }
+
+    test "2) Las Regiones que atraviesa un camino dado"{
+        assert.equals(caminoTP.regionesAtravesadas(),#{rohan,gondor})
+    }
+    
+}

@@ -1,0 +1,155 @@
+//Arsenal
+import main.arsenal.arco.*
+import main.arsenal.daga.*
+import main.arsenal.espada.*
+import main.arsenal.hacha.*
+import main.arsenal.baculo.*
+//Guerreros
+import main.guerreros.elfos.*
+import main.guerreros.enano.*
+import main.guerreros.gollum.*
+import main.guerreros.guerrero.*
+import main.guerreros.hobit.*
+import main.guerreros.humano.*
+import main.guerreros.maiar.*
+import main.guerreros.tom.*
+//Caminos tierra media
+import main.caminos.camino.*
+import main.regiones.gondor.*
+import main.regiones.rohan.*
+
+describe "Prueba para el arsenal" {
+
+    test "Espada con multiplicador de 15 y de origen Enano" {
+     const espadaEnana = new Espada(multiplicador = 15, origen = origenEnano)
+     assert.equals(300, espadaEnana.poderDeArma())
+    }
+
+    test "Daga con multiplicador de 15 y origen Enano" {
+     const dagaEnana = new Daga(multiplicador = 15, origen = origenEnano)
+     assert.equals(150,dagaEnana.poderDeArma())
+     
+    }
+    
+    test "Hacha con mango de 50cm, con una hoja de 5kg" {
+     const hachovich = new Hacha(largoMango = 50, pesoHoja = 5)
+     assert.equals(250, hachovich.poderDeArma())
+    }
+    
+    test "Arco con longitud de 110cm" {
+     const arco = new Arco(longitud = 110)
+     assert.equals(440, arco.poderDeArma())
+    }
+
+    test "Modificar la tensión del arco a 35kg. Mismo arco que antes…" {
+     const arcovich = new Arco(longitud = 110)
+     arcovich.tension(35)
+     assert.equals(385, arcovich.poderDeArma())
+    }
+}
+
+
+
+describe "Test para guerreros"{
+    test "Poder de Frodo (sin items)"{
+        const espadaElfica = new Espada(multiplicador = 8, origen = origenElfico)
+        const frodo = new Hobbbit(armas = [espadaElfica],vida = 50)
+        
+        assert.equals(290,frodo.poder())
+    }
+    
+    test "Poder de Gimli"{
+        const hacha = new Hacha (largoMango = 70, pesoHoja = 5)
+        const gimli = new Enano (factorDePoder = 3, armas = [hacha, hacha], vida = 75)
+        assert.equals(2175, gimli.poder())
+    }
+    test "Poder de Legolas"{
+        const arco = new Arco (longitud = 110)
+        const espadita = new Espada (multiplicador = 12, origen = origenElfico)
+        const legolas = new Elfo (destrezaPropia = 1 ,armas = [arco, espadita], vida = 80)
+        
+
+        assert.equals (2480, legolas.poder())
+    }
+
+    test "Poder de Aragorn"{
+        const anduril = new Espada(multiplicador = 18, origen = origenElfico)
+        const daguita = new Daga (multiplicador = 10, origen = origenEnano)
+        const aragorn = new Humano (limitadorDePoder = 20, armas = [anduril,daguita], vida = 85)
+        assert.equals(2720,aragorn.poder())
+    }
+    
+    test "Poder de Gandalf"{
+        const espadaGlamdring = new Espada(multiplicador = 10, origen = origenElfico)
+        const baculo = new Baculo (poder = 400)
+        const gandalf = new Maiar(armas = [espadaGlamdring, baculo], vida = 100, factorPoderBasico = 15, factorPoderAmenaza = 300)
+        
+        assert.equals(2900, gandalf.poder())
+    }
+
+    test "Poder de Gandalf con 9 de vida y todas sus armas"{
+        const espadaGlamdring = new Espada(multiplicador = 10, origen = origenElfico)
+        const baculo = new Baculo (poder = 400)
+        const gandalf = new Maiar(armas = [espadaGlamdring, baculo], vida = 9, factorPoderBasico = 15, factorPoderAmenaza = 300)
+        
+        assert.equals(4100, gandalf.poder())
+    }
+    test "Poder de Legolas que obtiene medio punto de destraza propio"{
+        const arco = new Arco(longitud = 110)
+        const espadaElfica = new Espada(multiplicador = 12, origen = origenElfico)
+        const legolas = new Elfo(armas = [arco, espadaElfica], vida = 80, destrezaPropia = 1.5)
+        
+        assert.equals(2880, legolas.poder())
+    }
+}
+
+describe "Test de caminos"{
+
+    test "Un grupo no puede pasar por una zona por requerimiento de ítem." {
+        const hacha = new Hacha (largoMango = 70, pesoHoja = 5)
+        const gimli = new Enano (factorDePoder = 3, armas = [hacha, hacha], vida = 75)
+        const arco = new Arco(longitud = 110)
+        const espadaElfica = new Espada(multiplicador = 12, origen = origenElfico)
+        const legolas = new Elfo(armas = [arco, espadaElfica], vida = 80, destrezaPropia = 1.5)
+
+        assert.notThat(minasTirith.puedenPasar([gimli,legolas]))
+    }
+    test"Un grupo no puede pasar por una zona por requerimiento de guerrero"{
+        const gimli = new Enano (factorDePoder = 3, armas = [], vida = 75)
+        const legolas = new Elfo(armas = [], vida = 80, destrezaPropia = 1.5)
+
+        assert.notThat(bosqueDeFangorn.puedenPasar([gimli,legolas]))
+    }
+    test "Un grupo puede pasar por una zona."{
+        const hacha = new Hacha (largoMango = 70, pesoHoja = 5)
+        const gimli = new Enano (factorDePoder = 3, armas = [hacha, hacha], vida = 75, items = ["Capa Elfica"])
+        const arco = new Arco(longitud = 110)
+        const espadaElfica = new Espada(multiplicador = 12, origen = origenElfico)
+        const legolas = new Elfo(armas = [arco, espadaElfica], vida = 80, destrezaPropia = 1.5, items = ["Capa Elfica", "Capa Elfica"])
+
+        assert.that(estemnet.puedenPasar([gimli,legolas]))
+    }
+
+    test "Un grupo no puede atravesar un camino."{
+        const camino = new Camino(zonasARecorrer=[belfalas,bosqueDeFangorn,minasTirith])
+        const hacha = new Hacha (largoMango = 70, pesoHoja = 5)
+        const gimli = new Enano (factorDePoder = 3, armas = [hacha, hacha], vida = 75)
+        const arco = new Arco(longitud = 110)
+        const espadaElfica = new Espada(multiplicador = 12, origen = origenElfico)
+        const legolas = new Elfo(armas = [arco, espadaElfica], vida = 80, destrezaPropia = 1.5)
+
+        assert.notThat(camino.puedenRecorrer([gimli,legolas]))
+    }
+    
+    test "Un grupo puede atravesar un camino."{
+        const camino = new Camino(zonasARecorrer=[belfalas,bosqueDeFangorn,estemnet])
+        const hacha = new Hacha (largoMango = 70, pesoHoja = 5)
+        const gimli = new Enano (factorDePoder = 3, armas = [hacha, hacha], vida = 75, items = ["Capa Elfica"])
+        const arco = new Arco(longitud = 110)
+        const espadaElfica = new Espada(multiplicador = 12, origen = origenElfico)
+        const legolas = new Elfo(armas = [arco, espadaElfica], vida = 80, destrezaPropia = 1.5, items = ["Capa Elfica", "Capa Elfica"])
+
+        assert.that(camino.puedenRecorrer([gimli,legolas]))
+    }
+
+}
